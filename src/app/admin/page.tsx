@@ -54,8 +54,9 @@ export default function AdminPage() {
 
       if (error) throw error;
       setPhotos(photos.filter(p => p.id !== id));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting photo:', error);
+      alert(`Deletion failed: ${error.message || 'Permission denied'}`);
     }
   };
 
