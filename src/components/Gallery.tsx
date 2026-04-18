@@ -38,54 +38,60 @@ export default function Gallery() {
 
       if (error) throw error;
       
-      const demoPhotos = [
+      const demoPhotos: Photo[] = [
         { id: 'd1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
         { id: 'd2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: 'd3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' }
+        { id: 'd3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' },
+        { id: 'd4', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800', guest_name: 'Elena', created_at: new Date().toISOString(), event_id: 'demo' }
       ];
 
-      // Combine real data with demo data for testing
+      // Always include demo photos at the end during testing
       setPhotos([...(data || []), ...demoPhotos]);
     } catch (error) {
-      console.warn('Using only demo data.');
       setPhotos([
         { id: '1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '4', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800', guest_name: 'Elena', created_at: new Date().toISOString(), event_id: 'demo' }
+        { id: '2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' }
       ]);
     } finally {
       setLoading(false);
     }
   };
 
-  const renderImage = (props: any) => (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative overflow-hidden rounded-sm bg-muted/50 border border-black/5"
-    >
+  const renderImage = (props: any) => {
+    return (
       <motion.div
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="w-full h-full"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        className="group relative overflow-hidden rounded-sm bg-neutral-100 border border-black/5"
       >
-        <img 
-          {...props} 
-          className={`${props.className} w-full h-full object-cover`} 
-        />
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="w-full h-full aspect-[3/4]"
+        >
+          <img 
+            {...props} 
+            className={`${props.className} w-full h-full object-cover transition-opacity duration-500`}
+            loading="lazy"
+            onError={(e) => {
+              // Fallback for broken Supabase URLs (often policy issues)
+              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=10&w=10';
+              (e.target as HTMLImageElement).className += ' blur-lg grayscale opacity-50';
+            }}
+          />
+        </motion.div>
+        
+        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
+          <p className="text-white font-heading text-lg">
+            {props.alt?.replace('Shared by ', '') || 'Guest'}
+          </p>
+        </div>
       </motion.div>
-      
-      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
-        <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
-        <p className="text-white font-heading text-lg">
-          {props.alt?.replace('Shared by ', '') || 'Guest'}
-        </p>
-      </div>
-    </motion.div>
-  );
+    );
+  };
 
   if (loading) {
     return (
