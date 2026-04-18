@@ -41,7 +41,7 @@ export default function Home() {
               >
                 Everlasting
               </motion.h2>
-              <p className="mt-2 text-[10px] tracking-[0.4em] uppercase text-accent font-semibold drop-shadow-sm">
+              <p className="mt-2 text-xs tracking-[0.4em] uppercase text-accent font-semibold drop-shadow-sm">
                 The Celebration Feed
               </p>
             </div>
@@ -53,14 +53,14 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.6 }}
                 transition={{ delay: 0.5 }}
-                className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-3"
+                className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3 font-medium"
               >
                 Delighted to have you, {guestName}
               </motion.p>
-              <h1 className="text-5xl md:text-6xl font-bold font-heading text-primary tracking-tight">
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading text-primary tracking-tight leading-[1.1]">
                 Our Shared History
               </h1>
-              <div className="w-16 h-[1px] bg-accent/30 mx-auto mt-8" />
+              <div className="w-12 h-[1px] bg-accent/30 mx-auto mt-8" />
             </div>
             
             <Gallery />

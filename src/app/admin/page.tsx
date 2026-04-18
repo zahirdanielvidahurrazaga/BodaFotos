@@ -82,7 +82,7 @@ export default function AdminPage() {
             />
             <button
               type="submit"
-              className="w-full py-4 bg-primary text-white text-[10px] font-bold tracking-[0.2em] uppercase rounded-sm"
+              className="w-full py-4 bg-primary text-white text-xs font-bold tracking-[0.2em] uppercase rounded-sm"
             >
               Verify Identity
             </button>
@@ -102,31 +102,31 @@ export default function AdminPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold font-heading tracking-tight">Concierge Dashboard</h1>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-accent font-medium mt-1">Everlasting Control Panel</p>
+              <p className="text-xs tracking-[0.3em] uppercase text-accent font-medium mt-1">Everlasting Control Panel</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <Link 
               href="/"
-              className="px-6 py-3 text-[10px] font-bold tracking-[0.2em] uppercase text-primary border border-primary/10 rounded-sm hover:bg-black/5 transition-all flex items-center gap-2"
+              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-primary border border-primary/10 rounded-sm hover:bg-black/5 transition-all flex items-center justify-center gap-2"
             >
               <ExternalLink className="w-3 h-3" />
-              View Feed
+              Feed
             </Link>
             <button 
               onClick={() => alert('ZIP generation started.')}
-              className="px-8 py-3 bg-primary text-white text-[10px] font-bold tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-all shadow-xl shadow-primary/10 flex items-center gap-2"
+              className="flex-1 md:flex-none px-6 py-3 bg-primary text-white text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2"
             >
               <Download className="w-3 h-3" />
-              Preserve All (ZIP)
+              Preserve
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
           {[
             { label: 'Total Memories', value: photos.length, icon: Camera },
             { label: 'Guests', value: new Set(photos.map(p => p.guest_name)).size, icon: BarChart3 },
@@ -142,10 +142,10 @@ export default function AdminPage() {
             >
               <div className="flex items-center justify-between mb-4">
                 <stat.icon className="w-5 h-5 text-accent/40" />
-                <span className="text-[9px] tracking-[0.2em] uppercase text-muted-foreground">Real-time</span>
+                <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">Real-time</span>
               </div>
-              <p className="text-4xl font-bold font-heading tracking-tight">{stat.value}</p>
-              <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mt-2">{stat.label}</p>
+              <p className="text-3xl md:text-4xl font-bold font-heading tracking-tight">{stat.value}</p>
+              <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-2">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -165,7 +165,7 @@ export default function AdminPage() {
                 alt={photo.guest_name}
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-5 backdrop-blur-[2px]">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-1">Shared By</p>
+                <p className="text-xs tracking-[0.2em] uppercase text-white/60 mb-1">Shared By</p>
                 <p className="text-white font-heading text-lg mb-4">{photo.guest_name}</p>
                 <button 
                   onClick={() => handleDelete(photo.id)}

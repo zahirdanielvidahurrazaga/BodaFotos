@@ -78,10 +78,10 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
             >
-              <h1 className="mb-2 text-6xl md:text-7xl font-bold tracking-tighter text-white font-heading">
+              <h1 className="mb-2 text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter text-white font-heading">
                 Everlasting
               </h1>
-              <p className="mb-12 text-sm tracking-[0.4em] uppercase text-accent font-sans">
+              <p className="mb-12 text-xs tracking-[0.4em] uppercase text-accent font-sans font-medium">
                 The Shared History
               </p>
             </motion.div>
@@ -119,7 +119,7 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.4 }}
               transition={{ delay: 1.5 }}
-              className="mt-16 text-[10px] tracking-[0.3em] uppercase text-white"
+              className="mt-16 text-xs tracking-[0.3em] uppercase text-white"
             >
               Created for one unforgettable day
             </motion.p>

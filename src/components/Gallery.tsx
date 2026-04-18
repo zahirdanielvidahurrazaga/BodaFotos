@@ -9,8 +9,10 @@ import "react-photo-album/masonry.css";
 export default function Gallery() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [guestName, setGuestName] = useState('');
 
   useEffect(() => {
+    setGuestName(localStorage.getItem('wedding_guest_name') || 'Guest');
     fetchPhotos();
 
     const channel = supabase
@@ -75,7 +77,7 @@ export default function Gallery() {
         </motion.div>
         
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
-          <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
+          <p className="text-xs tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
           <p className="text-white font-heading text-lg">
             {props.alt?.replace('Shared by ', '') || 'Guest'}
           </p>
