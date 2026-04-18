@@ -38,20 +38,21 @@ export default function Gallery() {
 
       if (error) throw error;
       
-      if (!data || data.length === 0) {
-        throw new Error('No photos found, triggering demo mode');
-      }
+      const demoPhotos = [
+        { id: 'd1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
+        { id: 'd2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' },
+        { id: 'd3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' }
+      ];
 
-      setPhotos(data);
+      // Combine real data with demo data for testing
+      setPhotos([...(data || []), ...demoPhotos]);
     } catch (error) {
-      console.warn('Using demo data.');
+      console.warn('Using only demo data.');
       setPhotos([
         { id: '1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
         { id: '2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' },
         { id: '3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '4', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800', guest_name: 'Elena', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '5', url: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800', guest_name: 'Adrián', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '6', url: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?auto=format&fit=crop&q=80&w=800', guest_name: 'Karla', created_at: new Date().toISOString(), event_id: 'demo' }
+        { id: '4', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800', guest_name: 'Elena', created_at: new Date().toISOString(), event_id: 'demo' }
       ]);
     } finally {
       setLoading(false);
