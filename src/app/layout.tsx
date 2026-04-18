@@ -15,7 +15,16 @@ const notoSerif = Noto_Serif({
 
 export const metadata: Metadata = {
   title: "Everlasting | Shared Wedding Camera",
-  description: "Join the celebration and share your memories in real-time. A premium shared camera experience for one unforgettable day.",
+  description: "Capture and share the magic of our special day in a premium, real-time gallery.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Everlasting",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
   applicationName: "Everlasting",
   keywords: ["wedding", "shared camera", "real-time photos", "event gallery"],
   openGraph: {
