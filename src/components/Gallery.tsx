@@ -22,6 +22,13 @@ export default function Gallery() {
           setPhotos((prev) => [payload.new as Photo, ...prev]);
         }
       )
+      .on(
+        'postgres_changes',
+        { event: 'DELETE', schema: 'public', table: 'photos' },
+        (payload) => {
+          setPhotos((prev) => prev.filter(photo => photo.id !== payload.old.id));
+        }
+      )
       .subscribe();
 
     return () => {
@@ -37,21 +44,10 @@ export default function Gallery() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
-      const demoPhotos: Photo[] = [
-        { id: 'd1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: 'd2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: 'd3', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800', guest_name: 'Marcos', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: 'd4', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800', guest_name: 'Elena', created_at: new Date().toISOString(), event_id: 'demo' }
-      ];
-
-      // Always include demo photos at the end during testing
-      setPhotos([...(data || []), ...demoPhotos]);
+      setPhotos(data || []);
     } catch (error) {
-      setPhotos([
-        { id: '1', url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800', guest_name: 'Zahir', created_at: new Date().toISOString(), event_id: 'demo' },
-        { id: '2', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800', guest_name: 'Sofia', created_at: new Date().toISOString(), event_id: 'demo' }
-      ]);
+      console.error('Fetch error:', error);
+      setPhotos([]);
     } finally {
       setLoading(false);
     }
@@ -60,10 +56,10 @@ export default function Gallery() {
   const renderImage = (props: any) => {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="group relative overflow-hidden rounded-sm bg-neutral-100 border border-black/5"
       >
         <motion.div
@@ -73,17 +69,12 @@ export default function Gallery() {
         >
           <img 
             {...props} 
-            className={`${props.className} w-full h-full object-cover transition-opacity duration-500`}
+            className={`${props.className} w-full h-full object-cover transition-opacity duration-1000`}
             loading="lazy"
-            onError={(e) => {
-              // Fallback for broken Supabase URLs (often policy issues)
-              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=10&w=10';
-              (e.target as HTMLImageElement).className += ' blur-lg grayscale opacity-50';
-            }}
           />
         </motion.div>
         
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
           <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
           <p className="text-white font-heading text-lg">
             {props.alt?.replace('Shared by ', '') || 'Guest'}
@@ -117,7 +108,7 @@ export default function Gallery() {
   }));
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-20">
       <MasonryPhotoAlbum 
         photos={formattedPhotos}
         render={{ image: renderImage }}
@@ -128,11 +119,6 @@ export default function Gallery() {
         }}
         spacing={24}
       />
-      
-      {/* Debug Version Tag - Remove before final wedding */}
-      <div className="mt-20 opacity-10 text-center text-[8px] uppercase tracking-widest pb-10">
-        Infrastructure Sync: Verified v1.0.4-Robust-Load
-      </div>
     </div>
   );
 }
