@@ -46,8 +46,9 @@ export default function UploadButton({ guestName }: UploadButtonProps) {
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 4000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload failed:', error);
+      alert(`Upload Error: ${error.message || 'Unknown error'}. Check your Supabase RLS policies.`);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
