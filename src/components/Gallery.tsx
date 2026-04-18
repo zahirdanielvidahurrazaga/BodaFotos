@@ -128,6 +128,11 @@ export default function Gallery() {
         }}
         spacing={24}
       />
+      
+      {/* Debug Version Tag - Remove before final wedding */}
+      <div className="mt-20 opacity-10 text-center text-[8px] uppercase tracking-widest pb-10">
+        Infrastructure Sync: Verified v1.0.4-Robust-Load
+      </div>
     </div>
   );
 }
