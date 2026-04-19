@@ -228,27 +228,34 @@ export default function AdminPage() {
                 alt={photo.guest_name}
                 loading="lazy"
               />
-              {/* Desktop: full overlay on hover */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden sm:flex flex-col justify-end p-4 backdrop-blur-[2px]">
-                <p className="text-[9px] tracking-[0.2em] uppercase text-white/60 mb-1 font-sans">Compartido por</p>
-                <p className="text-white font-heading text-base mb-3">{photo.guest_name}</p>
+              {/* Guest Name Chip (Always visible but subtle) */}
+              <div className="absolute bottom-2 left-2 pointer-events-none">
+                <div className="glass px-2 py-1 rounded-full border border-white/20 backdrop-blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-1.5">
+                  <span className="text-[7px] tracking-[0.1em] uppercase text-white/50 font-sans">De</span>
+                  <span className="text-white font-heading italic text-[10px] truncate max-w-[80px]">
+                    {photo.guest_name}
+                  </span>
+                </div>
+              </div>
+
+              {/* Glass Delete Button */}
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500">
                 <button 
                   onClick={() => handleDelete(photo.id)}
-                  className="w-full py-2.5 bg-red-500/90 text-white text-[9px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 font-sans"
+                  className="w-8 h-8 rounded-full glass border border-white/20 shadow-lg flex items-center justify-center text-white/80 hover:text-red-400 hover:bg-white/10 transition-all backdrop-blur-xl"
+                  title="Eliminar Recuerdo"
                 >
-                  <Trash2 className="w-3 h-3" />
-                  Eliminar
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
-              {/* Mobile: always-visible delete button */}
-              <div className="absolute bottom-0 left-0 right-0 sm:hidden bg-gradient-to-t from-black/70 to-transparent p-2 pt-8">
-                <p className="text-[8px] tracking-[0.1em] text-white/60 mb-1 font-sans truncate">{photo.guest_name}</p>
+
+              {/* Mobile Persistent Delete (Top right restricted for mobile) */}
+              <div className="absolute top-2 right-2 sm:hidden">
                 <button 
                   onClick={() => handleDelete(photo.id)}
-                  className="w-full py-2 bg-red-500/90 text-white text-[8px] font-bold uppercase tracking-[0.15em] rounded-md flex items-center justify-center gap-1.5 font-sans"
+                  className="w-7 h-7 rounded-full glass border border-white/20 flex items-center justify-center text-white/60 active:text-red-400 backdrop-blur-md"
                 >
-                  <Trash2 className="w-2.5 h-2.5" />
-                  Eliminar
+                  <Trash2 className="w-3 h-3" />
                 </button>
               </div>
             </motion.div>
