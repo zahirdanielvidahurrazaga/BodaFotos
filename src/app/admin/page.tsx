@@ -228,7 +228,8 @@ export default function AdminPage() {
                 alt={photo.guest_name}
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 backdrop-blur-[2px]">
+              {/* Desktop: full overlay on hover */}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden sm:flex flex-col justify-end p-4 backdrop-blur-[2px]">
                 <p className="text-[9px] tracking-[0.2em] uppercase text-white/60 mb-1 font-sans">Compartido por</p>
                 <p className="text-white font-heading text-base mb-3">{photo.guest_name}</p>
                 <button 
@@ -236,6 +237,17 @@ export default function AdminPage() {
                   className="w-full py-2.5 bg-red-500/90 text-white text-[9px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 font-sans"
                 >
                   <Trash2 className="w-3 h-3" />
+                  Eliminar
+                </button>
+              </div>
+              {/* Mobile: always-visible delete button */}
+              <div className="absolute bottom-0 left-0 right-0 sm:hidden bg-gradient-to-t from-black/70 to-transparent p-2 pt-8">
+                <p className="text-[8px] tracking-[0.1em] text-white/60 mb-1 font-sans truncate">{photo.guest_name}</p>
+                <button 
+                  onClick={() => handleDelete(photo.id)}
+                  className="w-full py-2 bg-red-500/90 text-white text-[8px] font-bold uppercase tracking-[0.15em] rounded-md flex items-center justify-center gap-1.5 font-sans"
+                >
+                  <Trash2 className="w-2.5 h-2.5" />
                   Eliminar
                 </button>
               </div>
