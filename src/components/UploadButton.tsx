@@ -60,23 +60,22 @@ export default function UploadButton({ guestName }: UploadButtonProps) {
 
   return (
     <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-6">
-      {/* Success Notification */}
       <AnimatePresence>
-        {success && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+        {uploading && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="px-6 py-3 bg-white/95 backdrop-blur-md rounded-full border border-green-500/20 shadow-2xl flex items-center gap-3"
+            className="fixed bottom-32 px-8 py-4 bg-primary/80 backdrop-blur-xl rounded-full border border-accent/20 shadow-2xl flex items-center gap-4 z-50"
           >
-            <CheckCircle2 className="w-5 h-5 text-green-500" />
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-green-700">Moment Preserved</span>
+            <Loader2 className="w-5 h-5 text-accent animate-spin" />
+            <span className="text-xs tracking-[0.2em] uppercase text-accent font-heading">Guardando recuerdo...</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="flex items-center bg-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl p-2 rounded-full border border-white/10 ring-1 ring-black/5">
-        {/* Gallery Button */}
+      <AnimatePresence>
+        {success && (
         <div className="relative">
           <input
             type="file"

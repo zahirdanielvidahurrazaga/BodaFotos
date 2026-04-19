@@ -32,17 +32,17 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="min-h-screen pb-40 bg-background"
         >
-          <header className="sticky top-0 z-30 w-full px-8 py-10 glass border-b border-black/5">
+          <header className="sticky top-0 z-30 w-full px-8 py-10 glass border-b border-accent/10">
             <div className="flex flex-col items-center max-w-7xl mx-auto">
               <motion.h2 
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="text-4xl font-bold tracking-tighter text-primary font-heading"
+                className="text-4xl font-cursive text-accent drop-shadow-sm"
               >
-                Everlasting
+                Jesús & Paola
               </motion.h2>
-              <p className="mt-2 text-xs tracking-[0.4em] uppercase text-accent font-semibold drop-shadow-sm">
-                The Celebration Feed
+              <p className="mt-2 text-xs tracking-[0.4em] uppercase text-accent/60 font-heading">
+                Galería de Invitados
               </p>
             </div>
           </header>
@@ -53,12 +53,12 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.6 }}
                 transition={{ delay: 0.5 }}
-                className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3 font-medium"
+                className="text-xs tracking-[0.2em] uppercase text-accent/50 mb-3 font-heading"
               >
-                Delighted to have you, {guestName}
+                Qué alegría tenerte aquí, {guestName}
               </motion.p>
-              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading text-primary tracking-tight leading-[1.1]">
-                Our Shared History
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading text-accent tracking-tight leading-[1.1]">
+                Nuestra Historia
               </h1>
               <div className="w-12 h-[1px] bg-accent/30 mx-auto mt-8" />
             </div>

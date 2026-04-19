@@ -56,35 +56,44 @@ export default function AdminPage() {
       setPhotos(photos.filter(p => p.id !== id));
     } catch (error: any) {
       console.error('Error deleting photo:', error);
-      alert(`Deletion failed: ${error.message || 'Permission denied'}`);
+      alert(`Error al eliminar: ${error.message || 'Permiso denegado'}`);
     }
   };
 
+  const stats = [
+    { label: 'Recuerdos Totales', value: photos.length, icon: Camera },
+    { label: 'Invitados', value: new Set(photos.map(p => p.guest_name)).size, icon: BarChart3 },
+    { label: 'Almacenamiento', value: '0.4 GB', icon: ShieldCheck },
+  ];
+
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-white font-serif">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-sm glass p-10 rounded-sm text-center border border-black/5"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md space-y-12 text-center"
         >
-          <ShieldCheck className="w-12 h-12 text-accent mx-auto mb-6" />
-          <h1 className="text-2xl font-bold font-heading mb-2">Private Access</h1>
-          <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-8">Concierge Identification Needed</p>
+          <div>
+            <h2 className="text-4xl font-cursive text-accent mb-4">Concierge Privado</h2>
+            <p className="text-xs tracking-[0.3em] uppercase text-accent/50 font-heading">
+              Identidad de Acceso Requerida
+            </p>
+          </div>
           
           <form onSubmit={handleAuth} className="space-y-6">
             <input
               type="password"
-              placeholder="Enter Passcode"
+              placeholder="Código de Acceso"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
-              className="w-full bg-transparent border-b border-black/10 text-center py-3 outline-none focus:border-accent transition-all font-serif italic"
+              className="w-full bg-transparent border-b border-accent/20 py-4 text-center text-2xl outline-none focus:border-accent transition-all placeholder:text-accent/20 text-accent font-heading"
             />
             <button
               type="submit"
-              className="w-full py-4 bg-primary text-white text-xs font-bold tracking-[0.2em] uppercase rounded-sm"
+              className="w-full py-4 bg-accent text-primary text-xs font-bold tracking-[0.2em] uppercase font-heading hover:bg-accent/90 transition-all shadow-xl shadow-accent/10"
             >
-              Verify Identity
+              Verificar Identidad
             </button>
           </form>
         </motion.div>
@@ -93,33 +102,33 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fdfdfd]">
-      <header className="sticky top-0 z-30 w-full glass border-b border-black/5 px-8 py-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full border border-accent/20 flex items-center justify-center bg-white shadow-sm">
+    <div className="min-h-screen bg-background text-white font-serif">
+      <header className="sticky top-0 z-30 w-full glass border-b border-accent/10 py-10">
+        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-6">
+            <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center">
               <ShieldCheck className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold font-heading tracking-tight">Concierge Dashboard</h1>
-              <p className="text-xs tracking-[0.3em] uppercase text-accent font-medium mt-1">Everlasting Control Panel</p>
+              <h1 className="text-3xl font-heading tracking-tight text-accent">Panel de Control</h1>
+              <p className="text-xs tracking-[0.3em] uppercase text-accent/50 font-heading mt-1">Jesús & Paola | Concierge</p>
             </div>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Link 
               href="/"
-              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-primary border border-primary/10 rounded-sm hover:bg-black/5 transition-all flex items-center justify-center gap-2"
+              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-accent border border-accent/20 rounded-sm hover:bg-accent/5 transition-all flex items-center justify-center gap-2 font-heading"
             >
               <ExternalLink className="w-3 h-3" />
-              Feed
+              Ver Galería
             </Link>
             <button 
-              onClick={() => alert('ZIP generation started.')}
-              className="flex-1 md:flex-none px-6 py-3 bg-primary text-white text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2"
+              onClick={() => alert('Generando archivo ZIP de alta calidad...')}
+              className="flex-1 md:flex-none px-6 py-3 bg-accent text-primary text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-all shadow-xl shadow-accent/10 flex items-center justify-center gap-2 font-heading"
             >
               <Download className="w-3 h-3" />
-              Preserve
+              Preservar Todo (ZIP)
             </button>
           </div>
         </div>
@@ -127,27 +136,27 @@ export default function AdminPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
-          {[
-            { label: 'Total Memories', value: photos.length, icon: Camera },
-            { label: 'Guests', value: new Set(photos.map(p => p.guest_name)).size, icon: BarChart3 },
-            { label: 'Storage', value: '4.2 GB', icon: Settings },
-            { label: 'Status', value: 'Live', icon: ShieldCheck },
-          ].map((stat, i) => (
-            <motion.div
+          {stats.map((stat, i) => (
+            <motion.div 
               key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.1, duration: 0.8 }}
-              className="p-8 bg-white border border-black/5 shadow-sm rounded-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="glass p-8 border border-accent/5 relative group overflow-hidden"
             >
               <div className="flex items-center justify-between mb-4">
                 <stat.icon className="w-5 h-5 text-accent/40" />
-                <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">Real-time</span>
+                <span className="text-xs tracking-[0.2em] uppercase text-accent/30 font-heading">Tiempo Real</span>
               </div>
-              <p className="text-3xl md:text-4xl font-bold font-heading tracking-tight">{stat.value}</p>
-              <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-2">{stat.label}</p>
+              <p className="text-3xl md:text-4xl font-heading tracking-tight text-accent">{stat.value}</p>
+              <p className="text-xs tracking-[0.2em] uppercase text-accent/60 mt-2 font-heading">{stat.label}</p>
             </motion.div>
           ))}
+        </div>
+
+        <div className="flex items-center justify-between mb-10">
+          <h3 className="text-xl font-heading tracking-wider text-accent/80 uppercase">Moderación de Recuerdos</h3>
+          <div className="h-[1px] flex-1 mx-8 bg-accent/10" />
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">

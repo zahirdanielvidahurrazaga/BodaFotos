@@ -16,7 +16,7 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
   const backgrounds = ['/couple-1.png', '/couple-2.png'];
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowContent(true), 2000);
+    const timer = setTimeout(() => setShowContent(true), 1500);
     const bgTimer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % backgrounds.length);
     }, 8000);
@@ -34,21 +34,37 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[100dvh] p-6 overflow-hidden bg-black text-white">
-      {/* Cinematic Background with Ken Burns Effect */}
+    <div className="relative flex flex-col items-center justify-center min-h-[100dvh] p-6 overflow-hidden bg-[#002b44] text-white font-serif">
+      {/* Floral Background Motifs */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 z-10">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2 }}
+          className="absolute -top-10 -left-10 w-64 h-64 border-t border-l border-accent/30 rounded-full"
+        />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2, delay: 0.5 }}
+          className="absolute -bottom-10 -right-10 w-64 h-64 border-b border-r border-accent/30 rounded-full"
+        />
+      </div>
+
+      {/* Cinematic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <AnimatePresence mode="popLayout">
           <motion.div 
             key={bgIndex}
-            initial={{ opacity: 0, scale: 1.15 }}
-            animate={{ opacity: 0.4, scale: 1 }}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 0.3, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 4, ease: "easeInOut" }}
-            className="absolute inset-0 bg-cover bg-center grayscale brightness-50"
+            className="absolute inset-0 bg-cover bg-center brightness-75"
             style={{ backgroundImage: `url(${backgrounds[bgIndex]})` }}
           />
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-at from-[#002b44] via-transparent to-[#002b44]/60" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -60,10 +76,10 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
             exit={{ opacity: 0, scale: 1.1 }}
             className="z-50 flex flex-col items-center"
           >
-            <h1 className="text-4xl font-bold tracking-[0.3em] uppercase text-primary font-heading">
-              Everlasting
+            <h1 className="text-3xl font-heading tracking-[0.4em] uppercase text-accent animate-pulse">
+              J&P
             </h1>
-            <div className="w-12 h-[1px] bg-accent mt-4 animate-pulse" />
+            <div className="w-12 h-[1px] bg-accent/40 mt-4" />
           </motion.div>
         ) : (
           <motion.div
@@ -71,58 +87,71 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5 }}
-            className="z-10 w-full max-w-md text-center"
+            className="z-20 w-full max-w-md text-center"
           >
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
+              transition={{ delay: 0.3, duration: 1.2 }}
             >
-              <h1 className="mb-2 text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter text-white font-heading">
-                Everlasting
+              <p className="text-xs tracking-[0.5em] uppercase text-accent/80 mb-6 font-heading">
+                01 MAYO 2026
+              </p>
+              <h1 className="text-6xl sm:text-7xl font-cursive text-accent mb-2 drop-shadow-xl">
+                Jesús & Paola
               </h1>
-              <p className="mb-12 text-xs tracking-[0.4em] uppercase text-accent font-sans font-medium">
-                The Shared History
+              <p className="mb-16 text-[10px] tracking-[0.3em] uppercase text-white/40 font-heading">
+                Nuestra Historia Compartida
               </p>
             </motion.div>
 
             <motion.form 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8, duration: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 1 }}
               onSubmit={handleSubmit} 
-              className="space-y-8"
+              className="space-y-12"
             >
               <div className="relative group">
                 <input
                   type="text"
                   required
-                  placeholder="Invite Name"
+                  placeholder="Tu Nombre"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-0 py-4 bg-transparent border-b border-white/20 outline-none focus:border-accent text-center text-xl transition-all duration-700 placeholder:text-white/20 text-white font-serif italic"
+                  className="w-full px-0 py-4 bg-transparent border-b border-white/10 outline-none focus:border-accent text-center text-xl transition-all duration-700 placeholder:text-white/10 text-white font-serif italic"
                 />
-                <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-accent transition-all duration-700 group-focus-within:w-full" />
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="w-full py-5 text-sm font-bold tracking-[0.2em] uppercase text-primary transition-all bg-white hover:bg-white/95"
+                className="relative mx-auto w-32 h-32 rounded-full bg-accent flex items-center justify-center shadow-[0_0_50px_rgba(197,160,89,0.3)] transition-all group overflow-hidden"
               >
-                Enter the Celebration
+                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
+                <div className="z-10 text-black flex flex-col items-center">
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-heading">Entrar</span>
+                  <div className="w-8 h-[1px] bg-black/20 my-1" />
+                  <span className="text-lg font-cursive italic">JP</span>
+                </div>
+                {/* Wax seal texture simulation */}
+                <div className="absolute inset-0 border-4 border-black/5 rounded-full pointer-events-none" />
               </motion.button>
+              
+              <p className="text-[9px] tracking-[0.4em] uppercase text-white/30 font-heading">
+                Toca el sello para comenzar
+              </p>
             </motion.form>
 
-            <motion.p 
+            <motion.div 
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              transition={{ delay: 1.5 }}
-              className="mt-16 text-xs tracking-[0.3em] uppercase text-white"
+              animate={{ opacity: 0.3 }}
+              transition={{ delay: 2 }}
+              className="mt-20 text-[8px] tracking-[0.4em] uppercase text-white font-heading"
             >
-              Created for one unforgettable day
-            </motion.p>
+              #BodaPaolayJesus
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

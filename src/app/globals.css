@@ -1,16 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 @layer theme {
   :root {
-    --background: #fdfdfd;
-    --foreground: #1c1c1c;
-    --primary: #121212;
-    --accent: #c5a059;
+    --background: #002b44;
+    --foreground: #FDFDFD;
+    --primary: #003B5C;
+    --accent: #C5A059;
     --accent-foreground: #ffffff;
     --card: #ffffff;
     --card-foreground: #1c1c1c;
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
+    --muted: #E5E7EB;
+    --muted-foreground: #6B7280;
     --radius: 0.5rem;
   }
 

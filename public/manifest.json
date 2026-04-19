@@ -1,11 +1,11 @@
 {
-  "name": "Everlasting | Wedding Feed",
-  "short_name": "Everlasting",
-  "description": "Premium shared wedding camera for your special day.",
+  "name": "Jesús & Paola | Nuestra Historia",
+  "short_name": "J&P",
+  "description": "Galería fotográfica compartida para la boda de Jesús y Paola.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0d0d0d",
-  "theme_color": "#c4a052",
+  "background_color": "#002b44",
+  "theme_color": "#003B5C",
   "orientation": "portrait",
   "icons": [
     {

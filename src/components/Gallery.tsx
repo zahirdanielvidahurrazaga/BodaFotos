@@ -12,7 +12,7 @@ export default function Gallery() {
   const [guestName, setGuestName] = useState('');
 
   useEffect(() => {
-    setGuestName(localStorage.getItem('wedding_guest_name') || 'Guest');
+    setGuestName(localStorage.getItem('wedding_guest_name') || 'Invitado');
     fetchPhotos();
 
     const channel = supabase
@@ -55,58 +55,17 @@ export default function Gallery() {
     }
   };
 
-  const renderImage = (props: any) => {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative overflow-hidden rounded-sm bg-neutral-100 border border-black/5"
-      >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="w-full h-full aspect-[3/4]"
-        >
-          <img 
-            {...props} 
-            className={`${props.className} w-full h-full object-cover transition-opacity duration-1000`}
-            loading="lazy"
-          />
-        </motion.div>
-        
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
-          <p className="text-xs tracking-[0.2em] uppercase text-white/60 mb-1">Captured By</p>
-          <p className="text-white font-heading text-lg">
-            {props.alt?.replace('Shared by ', '') || 'Guest'}
-          </p>
-        </div>
-      </motion.div>
-    );
-  };
-
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="w-12 h-[1px] bg-accent/20">
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="h-full bg-accent"
-          />
-        </div>
+      <div className="flex flex-col items-center justify-center py-40 animate-pulse">
+        <div className="w-12 h-[1px] bg-accent/30 mb-8" />
+        <p className="text-xs tracking-[0.4em] uppercase text-accent/50 font-heading">
+          Cargando recuerdos...
+        </p>
       </div>
     );
   }
 
-  const formattedPhotos = photos.map(p => ({
-    src: p.url,
-    width: 800,
-    height: 1000,
-    key: p.id,
-    alt: `Shared by ${p.guest_name}`,
   }));
 
   return (

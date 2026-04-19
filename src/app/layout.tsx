@@ -14,29 +14,29 @@ const notoSerif = Noto_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Everlasting | Shared Wedding Camera",
-  description: "Capture and share the magic of our special day in a premium, real-time gallery.",
+  title: "Jesús & Paola | Nuestra Historia",
+  description: "Captura y comparte la magia de nuestro día especial en nuestra galería privada.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Everlasting",
+    title: "Jesús & Paola",
   },
   other: {
     "mobile-web-app-capable": "yes",
   },
-  applicationName: "Everlasting",
+  applicationName: "Jesús & Paola",
   keywords: ["wedding", "shared camera", "real-time photos", "event gallery"],
   openGraph: {
-    title: "Everlasting | Our Shared History",
-    description: "Capture and share the magic of our wedding day.",
+    title: "Jesús & Paola | Nuestra Historia Compartida",
+    description: "Comparte la magia de nuestra boda con nosotros.",
     type: "website",
     images: [
       {
         url: "/couple-1.png",
         width: 1200,
         height: 630,
-        alt: "Everlasting Wedding",
+        alt: "Jesús & Paola",
       },
     ],
   },
@@ -48,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${inter.variable} ${notoSerif.variable} antialiased`}
       >
