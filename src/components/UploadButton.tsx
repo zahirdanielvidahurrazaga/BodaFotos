@@ -76,6 +76,19 @@ export default function UploadButton({ guestName }: UploadButtonProps) {
 
       <AnimatePresence>
         {success && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed bottom-32 px-8 py-4 bg-accent rounded-full shadow-2xl flex items-center gap-4 z-50"
+          >
+            <CheckCircle2 className="w-5 h-5 text-primary" />
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary font-heading">¡Momento Guardado!</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex items-center gap-8 bg-background/80 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl px-6 py-4 rounded-full border border-accent/10 ring-1 ring-accent/5">
         <div className="relative">
           <input
             type="file"
@@ -89,18 +102,19 @@ export default function UploadButton({ guestName }: UploadButtonProps) {
             whileTap={{ scale: 0.95 }}
             onClick={() => galleryInputRef.current?.click()}
             disabled={uploading}
-            className={`flex items-center justify-center w-14 h-14 rounded-full transition-all ${
-              uploading ? 'opacity-50 cursor-not-allowed' : 'bg-white/10 hover:bg-white/20'
+            className={`flex flex-col items-center justify-center gap-2 group transition-all ${
+              uploading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            <ImageIcon className="w-5 h-5 text-white/80" />
+            <div className="w-14 h-14 rounded-full bg-primary/40 border border-accent/20 flex items-center justify-center group-hover:bg-primary/60 transition-colors">
+              <ImageIcon className="w-5 h-5 text-accent/80" />
+            </div>
+            <span className="text-[10px] tracking-[0.2em] uppercase font-heading text-accent/70">Galería</span>
           </motion.button>
         </div>
 
-        {/* Elegant Divider */}
-        <div className="w-[1px] h-8 bg-white/10 mx-2" />
+        <div className="w-[1px] h-12 bg-accent/20" />
 
-        {/* Camera Button */}
         <div className="relative">
           <input
             type="file"
@@ -115,29 +129,19 @@ export default function UploadButton({ guestName }: UploadButtonProps) {
             whileTap={{ scale: 0.95 }}
             onClick={() => cameraInputRef.current?.click()}
             disabled={uploading}
-            className={`relative flex items-center justify-center w-20 h-20 rounded-full shadow-[0_0_30px_rgba(196,160,82,0.3)] transition-all ${
-              uploading 
-                ? 'bg-neutral-800' 
-                : 'bg-accent hover:shadow-[0_0_40px_rgba(196,160,82,0.5)]'
+            className={`flex flex-col items-center justify-center gap-2 group transition-all ${
+              uploading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            {uploading ? (
-              <Loader2 className="w-8 h-8 text-black animate-spin" />
-            ) : (
-              <div className="relative">
-                <Camera className="w-8 h-8 text-black" />
-                <motion.div
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -top-1 -right-1"
-                >
-                  <Sparkles className="w-4 h-4 text-black" />
-                </motion.div>
-              </div>
-            )}
+            <div className="w-16 h-16 rounded-full bg-accent shadow-[0_0_20px_rgba(197,160,89,0.3)] flex items-center justify-center group-hover:shadow-[0_0_30px_rgba(197,160,89,0.5)] transition-all relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent" />
+              <Camera className="w-7 h-7 text-primary relative z-10" />
+            </div>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase font-heading text-accent">Cámara</span>
           </motion.button>
         </div>
       </div>
     </div>
   );
+
 }
