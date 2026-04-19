@@ -43,7 +43,7 @@ export default function WelcomeScreen({ onJoin }: WelcomeScreenProps) {
             animate={{ opacity: 0.4, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 4, ease: "easeInOut" }}
-            className="absolute inset-0 bg-cover bg-center brightness-[1.15]"
+            className="absolute inset-0 bg-cover bg-[70%_center] brightness-[1.15]"
             style={{ backgroundImage: `url(${backgrounds[bgIndex]})` }}
           />
         </AnimatePresence>
