@@ -113,15 +113,16 @@ export default function Gallery() {
             photos={formattedPhotos}
             render={{ image: renderImage }}
             columns={(containerWidth) => {
-              if (containerWidth < 640) return 2;
+              if (containerWidth < 480) return 2;
+              if (containerWidth < 768) return 2;
               if (containerWidth < 1024) return 3;
               return 4;
             }}
-            spacing={24}
+            spacing={(containerWidth) => containerWidth < 640 ? 8 : 16}
           />
           <div className="mt-20 text-center">
-            <p className="text-[10px] tracking-[0.5em] uppercase text-accent/30 font-heading">
-              #BodaPaolayJesus
+            <p className="text-[10px] tracking-[0.5em] uppercase text-primary/20 font-sans">
+              #JesúsyPaola
             </p>
           </div>
         </>
