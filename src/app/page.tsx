@@ -32,18 +32,29 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="min-h-screen pb-40 bg-background"
         >
-          <header className="sticky top-0 z-30 w-full px-8 py-10 glass border-b border-accent/10">
-            <div className="flex flex-col items-center max-w-7xl mx-auto">
-              <motion.h2 
-                initial={{ y: -10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                className="text-4xl font-cursive text-accent drop-shadow-sm"
+          <header className="sticky top-0 z-30 w-full px-8 py-6 glass border-b border-primary/10">
+            <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-4">
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <motion.h2 
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  className="text-2xl font-heading font-bold text-foreground drop-shadow-sm uppercase tracking-wider"
+                >
+                  Jesús & Paola
+                </motion.h2>
+                <p className="mt-1 text-[10px] tracking-[0.4em] uppercase text-foreground/60 font-sans">
+                  Galería de Invitados
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('guest_name');
+                  setGuestName(null);
+                }}
+                className="px-4 py-2 text-[9px] tracking-[0.2em] font-bold uppercase rounded-sm border border-foreground/20 text-foreground/80 hover:bg-foreground/5 transition-colors font-sans"
               >
-                Jesús & Paola
-              </motion.h2>
-              <p className="mt-2 text-xs tracking-[0.4em] uppercase text-accent/60 font-heading">
-                Galería de Invitados
-              </p>
+                Cambiar Invitado
+              </button>
             </div>
           </header>
 
@@ -53,14 +64,14 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.6 }}
                 transition={{ delay: 0.5 }}
-                className="text-xs tracking-[0.2em] uppercase text-accent/50 mb-3 font-heading"
+                className="text-xs tracking-[0.2em] uppercase text-foreground/60 mb-3 font-sans"
               >
-                Qué alegría tenerte aquí, {guestName}
+                Bienvenido a nuestra historia, {guestName}
               </motion.p>
-              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading text-accent tracking-tight leading-[1.1]">
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading text-foreground tracking-tight leading-[1.1]">
                 Nuestra Historia
               </h1>
-              <div className="w-12 h-[1px] bg-accent/30 mx-auto mt-8" />
+              <div className="w-12 h-[1px] bg-foreground/20 mx-auto mt-8" />
             </div>
             
             <Gallery />

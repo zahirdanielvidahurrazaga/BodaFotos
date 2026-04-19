@@ -91,7 +91,7 @@ export default function AdminPage() {
             />
             <button
               type="submit"
-              className="w-full py-4 bg-accent text-primary text-xs font-bold tracking-[0.2em] uppercase font-heading hover:bg-accent/90 transition-all shadow-xl shadow-accent/10"
+              className="w-full py-4 glass text-foreground text-xs font-bold tracking-[0.2em] uppercase font-heading hover:bg-white/10 transition-all premium-shadow border border-white/20"
             >
               Verificar Identidad
             </button>
@@ -102,15 +102,15 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-white font-serif">
-      <header className="sticky top-0 z-30 w-full glass border-b border-accent/10 py-10">
+    <div className="min-h-screen bg-background font-serif">
+      <header className="sticky top-0 z-30 w-full glass border-b border-white/10 py-10">
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
-            <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6 text-accent" />
+            <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center">
+              <Camera className="w-6 h-6 text-foreground" />
             </div>
             <div>
-              <h1 className="text-3xl font-heading tracking-tight text-accent">Panel de Control</h1>
+              <h1 className="text-3xl font-heading tracking-tight text-foreground">Panel de Control</h1>
               <p className="text-xs tracking-[0.3em] uppercase text-accent/50 font-heading mt-1">Jesús & Paola | Concierge</p>
             </div>
           </div>
@@ -118,14 +118,14 @@ export default function AdminPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link 
               href="/"
-              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-accent border border-accent/20 rounded-sm hover:bg-accent/5 transition-all flex items-center justify-center gap-2 font-heading"
+              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-foreground border border-white/20 rounded-sm hover:bg-white/5 transition-all flex items-center justify-center gap-2 font-heading"
             >
               <ExternalLink className="w-3 h-3" />
               Ver Galería
             </Link>
             <button 
               onClick={() => alert('Generando archivo ZIP de alta calidad...')}
-              className="flex-1 md:flex-none px-6 py-3 bg-accent text-primary text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-all shadow-xl shadow-accent/10 flex items-center justify-center gap-2 font-heading"
+              className="flex-1 md:flex-none px-6 py-3 glass text-foreground text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 transition-all premium-shadow flex items-center justify-center gap-2 font-heading border border-white/20"
             >
               <Download className="w-3 h-3" />
               Preservar Todo (ZIP)
@@ -142,20 +142,19 @@ export default function AdminPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="glass p-8 border border-accent/5 relative group overflow-hidden"
+              className="glass p-8 border border-white/10 relative group overflow-hidden"
             >
               <div className="flex items-center justify-between mb-4">
                 <stat.icon className="w-5 h-5 text-accent/40" />
                 <span className="text-xs tracking-[0.2em] uppercase text-accent/30 font-heading">Tiempo Real</span>
               </div>
-              <p className="text-3xl md:text-4xl font-heading tracking-tight text-accent">{stat.value}</p>
-              <p className="text-xs tracking-[0.2em] uppercase text-accent/60 mt-2 font-heading">{stat.label}</p>
+              <p className="text-3xl md:text-4xl font-heading tracking-tight text-foreground">{stat.value}</p>
+              <p className="text-xs tracking-[0.2em] uppercase text-foreground/60 mt-2 font-heading">{stat.label}</p>
             </motion.div>
           ))}
         </div>
 
         <div className="flex items-center justify-between mb-10">
-          <h3 className="text-xl font-heading tracking-wider text-accent/80 uppercase">Moderación de Recuerdos</h3>
           <div className="h-[1px] flex-1 mx-8 bg-accent/10" />
         </div>
 

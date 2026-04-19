@@ -76,9 +76,9 @@ export default function Gallery() {
           />
         </motion.div>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
-          <p className="text-xs tracking-[0.2em] uppercase text-accent/60 mb-1 font-heading">Capturado por</p>
-          <p className="text-white font-cursive text-2xl">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-white/50 mb-1 font-sans">Capturado por</p>
+          <p className="text-white font-heading italic text-xl">
             {props.alt?.replace('Shared by ', '') || 'Invitado'}
           </p>
         </div>
@@ -89,8 +89,8 @@ export default function Gallery() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-40 animate-pulse">
-        <div className="w-12 h-[1px] bg-accent/30 mb-8" />
-        <p className="text-xs tracking-[0.4em] uppercase text-accent/50 font-heading">
+        <div className="w-12 h-[1px] bg-primary/20 mb-8" />
+        <p className="text-xs tracking-[0.4em] uppercase text-primary/40 font-sans">
           Cargando recuerdos...
         </p>
       </div>
@@ -126,11 +126,11 @@ export default function Gallery() {
           </div>
         </>
       ) : (
-        <div className="text-center py-40 border-y border-accent/5">
-          <p className="text-accent/40 font-serif italic text-lg mb-4">
+        <div className="text-center py-32 border-y border-primary/5">
+          <p className="text-primary/60 font-heading text-2xl md:text-3xl mb-4">
             Aún no hay momentos guardados.
           </p>
-          <p className="text-[10px] tracking-[0.3em] uppercase text-accent/20 font-heading">
+          <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-primary/40 font-sans">
             Sé el primero en compartir la magia
           </p>
         </div>
