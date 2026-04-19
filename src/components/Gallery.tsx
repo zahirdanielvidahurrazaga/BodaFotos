@@ -76,16 +76,12 @@ export default function Gallery() {
           />
         </motion.div>
         
-        {/* Subtle Guest Name Chip (Non-intrusive) */}
-        <div className="absolute bottom-3 left-3 right-3 flex justify-start pointer-events-none">
-          <motion.div 
-            className="glass px-3 py-1.5 rounded-full border border-white/20 backdrop-blur-md opacity-40 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-2"
-          >
-            <span className="text-[9px] tracking-[0.1em] uppercase text-white/70 font-sans">De</span>
-            <span className="text-white font-heading italic text-sm truncate max-w-[120px]">
-              {props.alt?.replace('Shared by ', '') || 'Invitado'}
-            </span>
-          </motion.div>
+        {/* Guest Name Overlay (Restored as requested) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 pointer-events-none">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-white/50 mb-1 font-sans">Capturado por</p>
+          <p className="text-white font-heading italic text-xl">
+            {props.alt?.replace('Shared by ', '') || 'Invitado'}
+          </p>
         </div>
       </motion.div>
     );

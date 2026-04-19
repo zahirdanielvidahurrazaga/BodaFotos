@@ -228,17 +228,13 @@ export default function AdminPage() {
                 alt={photo.guest_name}
                 loading="lazy"
               />
-              {/* Guest Name Chip (Always visible but subtle) */}
-              <div className="absolute bottom-2 left-2 pointer-events-none">
-                <div className="glass px-2 py-1 rounded-full border border-white/20 backdrop-blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-1.5">
-                  <span className="text-[7px] tracking-[0.1em] uppercase text-white/50 font-sans">De</span>
-                  <span className="text-white font-heading italic text-[10px] truncate max-w-[80px]">
-                    {photo.guest_name}
-                  </span>
-                </div>
+              {/* Guest Name Overlay (Restored and refined) */}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 h-1/2 pointer-events-none">
+                <p className="text-[9px] tracking-[0.2em] uppercase text-white/60 mb-1 font-sans">Compartido por</p>
+                <p className="text-white font-heading italic text-base">{photo.guest_name}</p>
               </div>
 
-              {/* Glass Delete Button */}
+              {/* Glass Delete Button (Always accessible top-right) */}
               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500">
                 <button 
                   onClick={() => handleDelete(photo.id)}
