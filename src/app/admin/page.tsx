@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Photo, supabase } from '@/lib/supabase';
 import { motion } from 'framer-motion';
-import { Trash2, Download, ShieldCheck, Camera, BarChart3, Settings, ExternalLink } from 'lucide-react';
+import { Trash2, Download, Camera, BarChart3, ShieldCheck, ExternalLink, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -11,6 +11,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,10 +21,10 @@ export default function AdminPage() {
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === '1234') { // Admin can change this later
+    if (passcode === '1234') {
       setIsAuthenticated(true);
     } else {
-      alert('Password Incorrect');
+      alert('Código Incorrecto');
     }
   };
 
@@ -44,7 +45,7 @@ export default function AdminPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this memory? This action cannot be undone.')) return;
+    if (!confirm('¿Seguro que deseas eliminar este recuerdo? No se puede deshacer.')) return;
 
     try {
       const { error } = await supabase
@@ -60,23 +61,66 @@ export default function AdminPage() {
     }
   };
 
+  const handleDownloadAll = async () => {
+    if (photos.length === 0) {
+      alert('No hay fotos para descargar.');
+      return;
+    }
+
+    setDownloading(true);
+
+    try {
+      // Dynamically import JSZip (lighter initial bundle)
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+
+      // Download each photo and add to ZIP
+      for (let i = 0; i < photos.length; i++) {
+        try {
+          const response = await fetch(photos[i].url);
+          const blob = await response.blob();
+          const ext = blob.type.includes('png') ? 'png' : 'jpg';
+          zip.file(`${photos[i].guest_name}_${i + 1}.${ext}`, blob);
+        } catch (err) {
+          console.warn(`Skipping photo ${i + 1}:`, err);
+        }
+      }
+
+      // Generate and download ZIP
+      const content = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(content);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `JesusYPaola_Recuerdos_${new Date().toISOString().split('T')[0]}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('ZIP generation failed:', error);
+      alert('Error al generar el archivo ZIP. Intenta de nuevo.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   const stats = [
-    { label: 'Recuerdos Totales', value: photos.length, icon: Camera },
+    { label: 'Recuerdos', value: photos.length, icon: Camera },
     { label: 'Invitados', value: new Set(photos.map(p => p.guest_name)).size, icon: BarChart3 },
-    { label: 'Almacenamiento', value: '0.4 GB', icon: ShieldCheck },
+    { label: 'Almacenamiento', value: `${(photos.length * 0.4).toFixed(1)} MB`, icon: ShieldCheck },
   ];
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-white font-serif">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md space-y-12 text-center"
         >
           <div>
-            <h2 className="text-4xl font-cursive text-accent mb-4">Concierge Privado</h2>
-            <p className="text-xs tracking-[0.3em] uppercase text-accent/50 font-heading">
+            <h2 className="text-3xl font-heading text-foreground mb-4">Concierge Privado</h2>
+            <p className="text-xs tracking-[0.3em] uppercase text-foreground/50 font-sans">
               Identidad de Acceso Requerida
             </p>
           </div>
@@ -87,11 +131,11 @@ export default function AdminPage() {
               placeholder="Código de Acceso"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
-              className="w-full bg-transparent border-b border-accent/20 py-4 text-center text-2xl outline-none focus:border-accent transition-all placeholder:text-accent/20 text-accent font-heading"
+              className="w-full bg-transparent border-b border-foreground/20 py-4 text-center text-2xl outline-none focus:border-foreground transition-all placeholder:text-foreground/20 text-foreground font-heading"
             />
             <button
               type="submit"
-              className="w-full py-4 glass text-foreground text-xs font-bold tracking-[0.2em] uppercase font-heading hover:bg-white/10 transition-all premium-shadow border border-white/20"
+              className="w-full py-4 glass text-foreground text-xs font-bold tracking-[0.2em] uppercase font-sans hover:bg-primary/5 transition-all border border-primary/10"
             >
               Verificar Identidad
             </button>
@@ -102,85 +146,97 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-serif">
-      <header className="sticky top-0 z-30 w-full glass border-b border-white/10 py-10">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
-            <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center">
-              <Camera className="w-6 h-6 text-foreground" />
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="sticky top-0 z-30 w-full glass border-b border-primary/10 py-6 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col gap-4">
+          {/* Title row */}
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-primary/20 flex items-center justify-center shrink-0">
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
             </div>
-            <div>
-              <h1 className="text-3xl font-heading tracking-tight text-foreground">Panel de Control</h1>
-              <p className="text-xs tracking-[0.3em] uppercase text-accent/50 font-heading mt-1">Jesús & Paola | Concierge</p>
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-heading tracking-tight text-foreground truncate">Panel de Control</h1>
+              <p className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-foreground/40 font-sans mt-0.5">Jesús & Paola | Concierge</p>
             </div>
           </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
+
+          {/* Actions row */}
+          <div className="flex items-center gap-2">
             <Link 
               href="/"
-              className="flex-1 md:flex-none px-6 py-3 text-xs font-bold tracking-[0.2em] uppercase text-foreground border border-white/20 rounded-sm hover:bg-white/5 transition-all flex items-center justify-center gap-2 font-heading"
+              className="flex-1 px-4 py-2.5 text-[9px] sm:text-xs font-bold tracking-[0.15em] uppercase text-foreground border border-primary/10 rounded-lg hover:bg-primary/5 transition-all flex items-center justify-center gap-2 font-sans"
             >
-              <ExternalLink className="w-3 h-3" />
-              Ver Galería
+              <ExternalLink className="w-3 h-3 shrink-0" />
+              <span>Galería</span>
             </Link>
             <button 
-              onClick={() => alert('Generando archivo ZIP de alta calidad...')}
-              className="flex-1 md:flex-none px-6 py-3 glass text-foreground text-xs font-bold tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 transition-all premium-shadow flex items-center justify-center gap-2 font-heading border border-white/20"
+              onClick={handleDownloadAll}
+              disabled={downloading || photos.length === 0}
+              className="flex-1 px-4 py-2.5 glass text-foreground text-[9px] sm:text-xs font-bold tracking-[0.15em] uppercase rounded-lg hover:bg-primary/5 transition-all flex items-center justify-center gap-2 font-sans border border-primary/10 disabled:opacity-50"
             >
-              <Download className="w-3 h-3" />
-              Preservar Todo (ZIP)
+              {downloading ? (
+                <>
+                  <Loader2 className="w-3 h-3 shrink-0 animate-spin" />
+                  <span>Descargando...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-3 h-3 shrink-0" />
+                  <span>Descargar ZIP</span>
+                </>
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Stats Grid - single row on mobile */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-10">
           {stats.map((stat, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="glass p-8 border border-white/10 relative group overflow-hidden"
+              className="glass p-4 sm:p-6 border border-primary/5 text-center"
             >
-              <div className="flex items-center justify-between mb-4">
-                <stat.icon className="w-5 h-5 text-accent/40" />
-                <span className="text-xs tracking-[0.2em] uppercase text-accent/30 font-heading">Tiempo Real</span>
-              </div>
-              <p className="text-3xl md:text-4xl font-heading tracking-tight text-foreground">{stat.value}</p>
-              <p className="text-xs tracking-[0.2em] uppercase text-foreground/60 mt-2 font-heading">{stat.label}</p>
+              <stat.icon className="w-4 h-4 text-foreground/30 mx-auto mb-2" />
+              <p className="text-2xl sm:text-3xl font-heading tracking-tight text-foreground">{stat.value}</p>
+              <p className="text-[8px] sm:text-[10px] tracking-[0.15em] uppercase text-foreground/50 mt-1 font-sans">{stat.label}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between mb-10">
-          <div className="h-[1px] flex-1 mx-8 bg-accent/10" />
-        </div>
+        {/* Divider */}
+        <div className="h-[1px] w-full bg-primary/5 mb-8" />
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {/* Photo Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           {photos.map((photo, i) => (
             <motion.div
               key={photo.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="group relative aspect-[4/5] bg-muted rounded-sm overflow-hidden border border-black/5"
+              className="group relative aspect-[4/5] bg-muted rounded-lg overflow-hidden border border-primary/5"
             >
               <img 
                 src={photo.url} 
                 className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                 alt={photo.guest_name}
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-5 backdrop-blur-[2px]">
-                <p className="text-xs tracking-[0.2em] uppercase text-white/60 mb-1">Shared By</p>
-                <p className="text-white font-heading text-lg mb-4">{photo.guest_name}</p>
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-4 backdrop-blur-[2px]">
+                <p className="text-[9px] tracking-[0.2em] uppercase text-white/60 mb-1 font-sans">Compartido por</p>
+                <p className="text-white font-heading text-base mb-3">{photo.guest_name}</p>
                 <button 
                   onClick={() => handleDelete(photo.id)}
-                  className="w-full py-3 bg-red-500/90 text-white text-[9px] font-bold uppercase tracking-[0.2em] rounded-sm hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-red-500/90 text-white text-[9px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 font-sans"
                 >
                   <Trash2 className="w-3 h-3" />
-                  Remove
+                  Eliminar
                 </button>
               </div>
             </motion.div>
@@ -188,8 +244,8 @@ export default function AdminPage() {
         </div>
 
         {!loading && photos.length === 0 && (
-          <div className="text-center py-40 border-2 border-dashed border-black/5 rounded-sm">
-            <p className="text-muted-foreground font-heading italic">Waiting for the first magical moment...</p>
+          <div className="text-center py-32 border border-dashed border-primary/10 rounded-lg">
+            <p className="text-foreground/40 font-heading text-xl">Esperando el primer recuerdo...</p>
           </div>
         )}
       </main>
